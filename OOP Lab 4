@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    double rentalPrice;
+    bool available;
+    int carID;
+    static int idCounter;
+
+public:
+    // Initialize static variable within the class
+    static int idCounter;
+
+    // Default Constructor
+    Car() : brand("Unknown"), model("Generic"), rentalPrice(0.0), available(true), carID(++idCounter) {}
+
+    // Parameterized Constructor
+    Car(string b, string m, double price, bool avail) : brand(b), model(m), rentalPrice(price), available(avail), carID(++idCounter) {}
+    
+    // Copy Constructor
+    Car(const Car &c) : brand(c.brand), model(c.model), rentalPrice(c.rentalPrice), available(c.available), carID(++idCounter) {}
+    
+    // Destructor
+    ~Car() {
+        cout << "Car ID " << carID << " removed from memory." << endl;
+    }
+
+    // Process Rental Request
+    void rentCar(int days) {
+        if (!available) {
+            cout << "Car is already rented." << endl;
+            return;
+        }
+        available = false;
+        double discount = 0.0;
+        if (days > 10) discount = 0.10;
+        else if (days > 5) discount = 0.05;
+        double totalCost = rentalPrice * days * (1 - discount);
+        cout << "Car rented for " << days << " days. Total cost: $" << totalCost << endl;
+    }
+
+    // Display car details
+    void displayCar() const {
+        cout << "Car ID: " << carID << " | Brand: " << brand << " | Model: " << model 
+             << " | Price: $" << rentalPrice << " | Available: " << (available ? "Yes" : "No") << endl;
+    }
+};
+
+int Car::idCounter = 0;
+
+int main() {
+    Car car1;
+    Car car2("Toyota", "Altis", 50.0, true);
+    Car car3 = car2;
+    
+    car1.displayCar();
+    car2.displayCar();
+    car3.displayCar();
+    
+    car2.rentCar(7);
+    car2.displayCar();
+    
+    return 0;
+}
