@@ -54,8 +54,8 @@ int Car::idCounter = 0;
 
 int main() {
     Car car1;
-    Car car2("Toyota", "Altis", 50.0, true);
-    Car car3 = car2;
+    Car car2("Toyota", "Camry", 50.0, true);
+    Car car3 = car2; // Copy constructor
     
     car1.displayCar();
     car2.displayCar();
