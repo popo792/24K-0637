@@ -12,7 +12,6 @@ private:
     static int idCounter;
 
 public:
-    // Initialize static variable within the class
     static int idCounter;
 
     // Default Constructor
