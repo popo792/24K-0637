@@ -1,0 +1,191 @@
+#include <iostream>
+using namespace std;
+
+// Task 01: Employee Management System
+class Employee {
+protected:
+    string name;
+    float salary;
+public:
+    Employee(string n, float s) : name(n), salary(s) {}
+    virtual void displayDetails() {
+        cout << "Name: " << name << "\nSalary: " << salary << endl;
+    }
+};
+
+class Manager : public Employee {
+    float bonus;
+public:
+    Manager(string n, float s, float b) : Employee(n, s), bonus(b) {}
+    void displayDetails() override {
+        Employee::displayDetails();
+        cout << "Bonus: " << bonus << endl;
+    }
+};
+
+// Task 02: Vehicle Management System
+class Vehicle {
+protected:
+    string brand;
+    int speed;
+public:
+    Vehicle(string b, int s) : brand(b), speed(s) {}
+    virtual void displayDetails() {
+        cout << "Brand: " << brand << "\nSpeed: " << speed << " km/h" << endl;
+    }
+};
+
+class Car : public Vehicle {
+    int seats;
+public:
+    Car(string b, int s, int seat) : Vehicle(b, s), seats(seat) {}
+    void displayDetails() override {
+        Vehicle::displayDetails();
+        cout << "Seats: " << seats << endl;
+    }
+};
+
+class ElectricCar : public Car {
+    int batteryLife;
+public:
+    ElectricCar(string b, int s, int seat, int bl) : Car(b, s, seat), batteryLife(bl) {}
+    void displayDetails() override {
+        Car::displayDetails();
+        cout << "Battery Life: " << batteryLife << " hours" << endl;
+    }
+};
+
+// Task 03: University Professor System
+class Person {
+protected:
+    string name;
+    int age;
+public:
+    Person(string n, int a) : name(n), age(a) {}
+    virtual void displayDetails() {
+        cout << "Name: " << name << "\nAge: " << age << endl;
+    }
+};
+
+class Teacher : public Person {
+    string subject;
+public:
+    Teacher(string n, int a, string sub) : Person(n, a), subject(sub) {}
+    void displayDetails() override {
+        Person::displayDetails();
+        cout << "Subject: " << subject << endl;
+    }
+};
+
+class Researcher : public Person {
+    string researchArea;
+public:
+    Researcher(string n, int a, string ra) : Person(n, a), researchArea(ra) {}
+    void displayDetails() override {
+        Person::displayDetails();
+        cout << "Research Area: " << researchArea << endl;
+    }
+};
+
+class Professor : public Researcher {
+    int publications;
+public:
+    Professor(string n, int a, string ra, int pub) : Researcher(n, a, ra), publications(pub) {}
+    void displayDetails() override {
+        Researcher::displayDetails();
+        cout << "Publications: " << publications << endl;
+    }
+};
+
+// Task 04: Bank Account System
+class Account {
+protected:
+    int accountNumber;
+    float balance;
+public:
+    Account(int accNo, float bal) : accountNumber(accNo), balance(bal) {}
+    virtual void displayDetails() {
+        cout << "Account Number: " << accountNumber << "\nBalance: " << balance << endl;
+    }
+};
+
+class SavingsAccount : public Account {
+    float interestRate;
+public:
+    SavingsAccount(int accNo, float bal, float ir) : Account(accNo, bal), interestRate(ir) {}
+    void displayDetails() override {
+        Account::displayDetails();
+        cout << "Interest Rate: " << interestRate << "%" << endl;
+    }
+};
+
+class CheckingAccount : public Account {
+    float overdraftLimit;
+public:
+    CheckingAccount(int accNo, float bal, float ol) : Account(accNo, bal), overdraftLimit(ol) {}
+    void displayDetails() override {
+        Account::displayDetails();
+        cout << "Overdraft Limit: " << overdraftLimit << endl;
+    }
+};
+
+// Task 05: Smart Wearable Device
+class Device {
+protected:
+    int deviceID;
+    bool status;
+public:
+    Device(int id, bool s) : deviceID(id), status(s) {}
+    virtual void displayDetails() {
+        cout << "Device ID: " << deviceID << "\nStatus: " << (status ? "On" : "Off") << endl;
+    }
+};
+
+class SmartPhone : public Device {
+    float screenSize;
+public:
+    SmartPhone(int id, bool s, float ss) : Device(id, s), screenSize(ss) {}
+    void displayDetails() override {
+        Device::displayDetails();
+        cout << "Screen Size: " << screenSize << " inches" << endl;
+    }
+};
+
+class SmartWatch : public Device {
+    bool heartRateMonitor;
+public:
+    SmartWatch(int id, bool s, bool hrm) : Device(id, s), heartRateMonitor(hrm) {}
+    void displayDetails() override {
+        Device::displayDetails();
+        cout << "Heart Rate Monitor: " << (heartRateMonitor ? "Yes" : "No") << endl;
+    }
+};
+
+class SmartWearable : public SmartWatch {
+    int stepCounter;
+public:
+    SmartWearable(int id, bool s, bool hrm, int steps) : SmartWatch(id, s, hrm), stepCounter(steps) {}
+    void displayDetails() override {
+        SmartWatch::displayDetails();
+        cout << "Step Counter: " << stepCounter << endl;
+    }
+};
+
+int main() {
+    Manager m("Alice", 50000, 5000);
+    m.displayDetails();
+    
+    ElectricCar eCar("Tesla", 200, 5, 12);
+    eCar.displayDetails();
+    
+    Professor p("Dr. Smith", 45, "AI", 50);
+    p.displayDetails();
+    
+    SavingsAccount sAcc(12345, 10000, 2.5);
+    sAcc.displayDetails();
+    
+    SmartWearable sw(101, true, true, 5000);
+    sw.displayDetails();
+    
+    return 0;
+}
