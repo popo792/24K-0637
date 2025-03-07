@@ -1,0 +1,219 @@
+#include <iostream>
+using namespace std;
+
+class Apartment {
+private:
+    int id;
+    string address;
+    string* ownerName;
+public:
+    Apartment(int id, string address, string owner) : id(id), address(address) {
+        ownerName = new string(owner);
+    }
+    Apartment(const Apartment& other) {
+        id = other.id;
+        address = other.address;
+        ownerName = other.ownerName;
+    }
+    void displayDetails() {
+        cout << id << " " << address << " " << *ownerName << endl;
+    }
+    ~Apartment() {
+        delete ownerName;
+    }
+};
+
+class Student {
+private:
+    int id;
+    string name;
+    int* scores;
+    int numScores;
+public:
+    Student(int id, string name, int scores[], int numScores) : id(id), name(name), numScores(numScores) {
+        this->scores = new int[numScores];
+        for (int i = 0; i < numScores; i++) {
+            this->scores[i] = scores[i];
+        }
+    }
+    Student(const Student& other) {
+        id = other.id;
+        name = other.name;
+        numScores = other.numScores;
+        scores = new int[numScores];
+        for (int i = 0; i < numScores; i++) {
+            scores[i] = other.scores[i];
+        }
+    }
+    void displayDetails() {
+        cout << id << " " << name << " ";
+        for (int i = 0; i < numScores; i++) {
+            cout << scores[i] << " ";
+        }
+        cout << endl;
+    }
+    ~Student() {
+        delete[] scores;
+    }
+};
+
+class Employee {
+public:
+    string name;
+    string designation;
+    Employee(string n, string d) : name(n), designation(d) {}
+};
+
+class Project {
+public:
+    string title;
+    string deadline;
+    Employee* employees[10];
+    int empCount;
+    Project(string t, string d) : title(t), deadline(d), empCount(0) {}
+    void addEmployee(Employee* e) {
+        if (empCount < 10) {
+            employees[empCount++] = e;
+        }
+    }
+    void displayProject() {
+        cout << title << " " << deadline << " ";
+        for (int i = 0; i < empCount; i++) {
+            cout << employees[i]->name << " " << employees[i]->designation << " ";
+        }
+        cout << endl;
+    }
+};
+
+class AlarmSystem {
+public:
+    string securityLevel;
+    AlarmSystem(string level) : securityLevel(level) {}
+    void displayAlarm() {
+        cout << securityLevel << endl;
+    }
+};
+
+class SmartHome {
+public:
+    AlarmSystem* alarm;
+    SmartHome(string level) {
+        alarm = new AlarmSystem(level);
+    }
+    ~SmartHome() {
+        delete alarm;
+    }
+    void displayHome() {
+        alarm->displayAlarm();
+    }
+};
+
+class Doctor {
+public:
+    string name;
+    string specialization;
+    int experience;
+    Doctor(string n, string s, int e) : name(n), specialization(s), experience(e) {}
+};
+
+class Hospital {
+public:
+    Doctor* doctors[10];
+    int docCount;
+    Hospital() : docCount(0) {}
+    void addDoctor(Doctor* d) {
+        if (docCount < 10) {
+            doctors[docCount++] = d;
+        }
+    }
+    void displayHospital() {
+        for (int i = 0; i < docCount; i++) {
+            cout << doctors[i]->name << " " << doctors[i]->specialization << " " << doctors[i]->experience << endl;
+        }
+    }
+};
+
+class Level {
+public:
+    string levelDetail;
+    Level(string detail) : levelDetail(detail) {}
+};
+
+class VideoGame {
+public:
+    string title;
+    string genre;
+    Level* levels[10];
+    int levelCount;
+    VideoGame(string t, string g) : title(t), genre(g), levelCount(0) {}
+    void addLevel(Level* l) {
+        if (levelCount < 10) {
+            levels[levelCount++] = l;
+        }
+    }
+    void displayGame() {
+        cout << title << " " << genre << " ";
+        for (int i = 0; i < levelCount; i++) {
+            cout << levels[i]->levelDetail << " ";
+        }
+        cout << endl;
+    }
+};
+
+class Product {
+public:
+    int id;
+    string name;
+    int quantity;
+    Product(int i, string n, int q) : id(i), name(n), quantity(q) {}
+};
+
+class Warehouse {
+public:
+    Product* products[10];
+    int productCount;
+    Warehouse() : productCount(0) {}
+    void addProduct(Product* p) {
+        if (productCount < 10) {
+            products[productCount++] = p;
+        }
+    }
+    void displayProducts() {
+        for (int i = 0; i < productCount; i++) {
+            cout << products[i]->id << " " << products[i]->name << " " << products[i]->quantity << endl;
+        }
+    }
+};
+
+int main() {
+    Apartment a1(101, "123 Main St", "John Doe");
+    a1.displayDetails();
+    
+    int scores[] = {90, 85, 88};
+    Student s1(1, "Alice", scores, 3);
+    s1.displayDetails();
+    
+    Employee e1("Alice", "Developer");
+    Project p1("Website", "2025");
+    p1.addEmployee(&e1);
+    p1.displayProject();
+    
+    SmartHome home("High");
+    home.displayHome();
+    
+    Doctor d1("Dr. Smith", "Cardiology", 10);
+    Hospital h;
+    h.addDoctor(&d1);
+    h.displayHospital();
+    
+    Level l1("Easy");
+    VideoGame v("Game1", "Action");
+    v.addLevel(&l1);
+    v.displayGame();
+    
+    Product pr(1, "Laptop", 50);
+    Warehouse w;
+    w.addProduct(&pr);
+    w.displayProducts();
+    return 0;
+}
