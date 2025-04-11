@@ -1,0 +1,235 @@
+// Task 1
+#include <iostream>
+using namespace std;
+
+class Complex {
+private:
+    double real, imag;
+public:
+    Complex(double r = 0, double i = 0) : real(r), imag(i) {}
+    
+    Complex operator+(const Complex& c) {
+        return Complex(real + c.real, imag + c.imag);
+    }
+    
+    Complex operator-(const Complex& c) {
+        return Complex(real - c.real, imag - c.imag);
+    }
+    
+    Complex operator*(const Complex& c) {
+        return Complex(real * c.real - imag * c.imag, real * c.imag + imag * c.real);
+    }
+    
+    friend ostream& operator<<(ostream& out, const Complex& c) {
+        out << c.real << " + " << c.imag << "i";
+        return out;
+    }
+};
+
+int main() {
+    Complex c1(3, 2), c2(1, 7);
+    Complex sum = c1 + c2;
+    Complex diff = c1 - c2;
+    Complex prod = c1 * c2;
+    cout << "Sum: " << sum << endl;
+    cout << "Difference: " << diff << endl;
+    cout << "Product: " << prod << endl;
+    return 0;
+}
+
+// Task 2
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+private:
+    string accountNumber;
+    double balance;
+public:
+    BankAccount(string acc, double bal) : accountNumber(acc), balance(bal) {}
+    
+    void deposit(double amount) {
+        balance += amount;
+    }
+    
+    void withdraw(double amount) {
+        if (balance >= amount)
+            balance -= amount;
+        else
+            cout << "Insufficient funds." << endl;
+    }
+    
+    friend ostream& operator<<(ostream& out, const BankAccount& acc) {
+        out << "Account: " << acc.accountNumber << ", Balance: $" << acc.balance;
+        return out;
+    }
+};
+
+int main() {
+    BankAccount acc1("12345", 500);
+    acc1.deposit(200);
+    acc1.withdraw(100);
+    cout << acc1 << endl;
+    return 0;
+}
+
+// Task 3
+#include <iostream>
+using namespace std;
+
+class Vector2D {
+private:
+    double x, y;
+public:
+    Vector2D(double x = 0, double y = 0) : x(x), y(y) {}
+    
+    Vector2D operator+(const Vector2D& v) {
+        return Vector2D(x + v.x, y + v.y);
+    }
+    
+    Vector2D operator-(const Vector2D& v) {
+        return Vector2D(x - v.x, y - v.y);
+    }
+    
+    double operator*(const Vector2D& v) {
+        return x * v.x + y * v.y;
+    }
+    
+    friend ostream& operator<<(ostream& out, const Vector2D& v) {
+        out << "(" << v.x << ", " << v.y << ")";
+        return out;
+    }
+};
+
+int main() {
+    Vector2D v1(3, 4), v2(1, 2);
+    Vector2D sum = v1 + v2;
+    Vector2D diff = v1 - v2;
+    double dot = v1 * v2;
+    cout << "Sum: " << sum << endl;
+    cout << "Difference: " << diff << endl;
+    cout << "Dot Product: " << dot << endl;
+    return 0;
+}
+
+// Task 4
+#include <iostream>
+using namespace std;
+
+class Car {
+private:
+    string model;
+    int year;
+    double price;
+public:
+    Car(string m, int y, double p) : model(m), year(y), price(p) {}
+    
+    friend class Dealership;
+    friend void applyDiscount(Car& c, double percent);
+    
+    friend ostream& operator<<(ostream& out, const Car& c) {
+        out << "Model: " << c.model << ", Year: " << c.year << ", Price: $" << c.price;
+        return out;
+    }
+};
+
+class Dealership {
+public:
+    void updatePrice(Car& c, double newPrice) {
+        c.price = newPrice;
+    }
+    
+    void displayCar(const Car& c) {
+        cout << c << endl;
+    }
+};
+
+void applyDiscount(Car& c, double percent) {
+    c.price -= (c.price * percent / 100.0);
+}
+
+int main() {
+    Car car1("Toyota", 2022, 30000);
+    Car car2("Honda", 2023, 28000);
+    
+    Dealership d;
+    d.updatePrice(car1, 29000);
+    applyDiscount(car2, 10);
+    
+    d.displayCar(car1);
+    d.displayCar(car2);
+    return 0;
+}
+
+// Task 5
+#include <iostream>
+using namespace std;
+
+class MatrixHelper;
+
+class Matrix2x2 {
+private:
+    int a, b, c, d;
+public:
+    Matrix2x2(int a = 0, int b = 0, int c = 0, int d = 0) : a(a), b(b), c(c), d(d) {}
+
+    Matrix2x2 operator+(const Matrix2x2& m) {
+        return Matrix2x2(a + m.a, b + m.b, c + m.c, d + m.d);
+    }
+
+    Matrix2x2 operator-(const Matrix2x2& m) {
+        return Matrix2x2(a - m.a, b - m.b, c - m.c, d - m.d);
+    }
+
+    Matrix2x2 operator*(const Matrix2x2& m) {
+        return Matrix2x2(
+            a * m.a + b * m.c,
+            a * m.b + b * m.d,
+            c * m.a + d * m.c,
+            c * m.b + d * m.d
+        );
+    }
+
+    friend int determinant(const Matrix2x2& m);
+    friend class MatrixHelper;
+
+    friend ostream& operator<<(ostream& out, const Matrix2x2& m) {
+        out << m.a << " " << m.b << endl << m.c << " " << m.d;
+        return out;
+    }
+};
+
+class MatrixHelper {
+public:
+    void updateElement(Matrix2x2& m, int row, int col, int value) {
+        if (row == 0 && col == 0) m.a = value;
+        else if (row == 0 && col == 1) m.b = value;
+        else if (row == 1 && col == 0) m.c = value;
+        else if (row == 1 && col == 1) m.d = value;
+    }
+};
+
+int determinant(const Matrix2x2& m) {
+    return m.a * m.d - m.b * m.c;
+}
+
+int main() {
+    Matrix2x2 m1(1, 2, 3, 4);
+    Matrix2x2 m2(5, 6, 7, 8);
+    
+    Matrix2x2 sum = m1 + m2;
+    Matrix2x2 diff = m1 - m2;
+    Matrix2x2 prod = m1 * m2;
+    
+    cout << "Sum:\n" << sum << endl;
+    cout << "Difference:\n" << diff << endl;
+    cout << "Product:\n" << prod << endl;
+    
+    cout << "Determinant of m1: " << determinant(m1) << endl;
+    
+    MatrixHelper helper;
+    helper.updateElement(m1, 0, 0, 10);
+    
+    cout << "Updated Matrix m1:\n" << m1 << endl;
+    return 0;
+}
