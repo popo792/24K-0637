@@ -1,0 +1,274 @@
+// Task 01
+#include <iostream>
+using namespace std;
+
+class Device {
+protected:
+    int deviceID;
+    string deviceName;
+    bool status;
+    string location;
+public:
+    Device(int id, string name, bool stat, string loc = "") : deviceID(id), deviceName(name), status(stat), location(loc) {}
+    virtual void turnOn() { status = true; }
+    virtual void turnOff() { status = false; }
+    virtual void getStatus() {}
+    virtual void displayInfo() {}
+};
+
+class Light : public Device {
+    int brightnessLevel;
+    string colorMode;
+public:
+    Light(int id, string name, bool stat, string loc, int brightness, string color) : Device(id, name, stat, loc), brightnessLevel(brightness), colorMode(color) {}
+    void displayInfo() {
+        cout << "Light: " << deviceName << " Brightness: " << brightnessLevel << " Color: " << colorMode << endl;
+    }
+};
+
+class Thermostat : public Device {
+    float temperature;
+    string mode;
+    float targetTemperature;
+public:
+    Thermostat(int id, string name, bool stat, string loc, float temp, string m, float target) : Device(id, name, stat, loc), temperature(temp), mode(m), targetTemperature(target) {}
+    void getStatus() {
+        cout << "Thermostat Temperature: " << temperature << endl;
+    }
+};
+
+class SecurityCamera : public Device {
+    string resolution;
+    bool recordingStatus;
+    bool nightVisionEnabled;
+public:
+    SecurityCamera(int id, string name, bool stat, string loc, string res, bool rec, bool night) : Device(id, name, stat, loc), resolution(res), recordingStatus(rec), nightVisionEnabled(night) {}
+    void turnOn() {
+        status = true;
+        recordingStatus = true;
+    }
+};
+class SmartPlug : public Device {
+    float powerConsumption;
+    int timerSetting;
+public:
+    SmartPlug(int id, string name, bool stat, string loc, float power, int timer) : Device(id, name, stat, loc), powerConsumption(power), timerSetting(timer) {}
+    void turnOff() {
+        status = false;
+        cout << "Logging Power Usage: " << powerConsumption << endl;
+    }
+};
+
+// Task 02
+class Product {
+protected:
+    int productID;
+    string productName;
+    float price;
+    int stockQuantity;
+public:
+    Product(int id, string name, float p, int qty = 0) : productID(id), productName(name), price(p), stockQuantity(qty) {}
+    virtual void applyDiscount() {}
+    virtual float calculateTotalPrice(int quantity) { return price * quantity; }
+    virtual void displayProductInfo() {}
+};
+
+class Electronics : public Product {
+    int warrantyPeriod;
+    string brand;
+public:
+    Electronics(int id, string name, float p, int qty, int warranty, string b) : Product(id, name, p, qty), warrantyPeriod(warranty), brand(b) {}
+    void displayProductInfo() {
+        cout << "Electronics: " << productName << " Brand: " << brand << " Warranty: " << warrantyPeriod << endl;
+    }
+};
+
+class Clothing : public Product {
+    string size;
+    string color;
+    string fabricMaterial;
+public:
+    Clothing(int id, string name, float p, int qty, string s, string c, string f) : Product(id, name, p, qty), size(s), color(c), fabricMaterial(f) {}
+    void applyDiscount() {
+        price *= 0.9;
+    }
+};
+
+class FoodItem : public Product {
+    string expirationDate;
+    int calories;
+public:
+    FoodItem(int id, string name, float p, int qty, string date, int cal) : Product(id, name, p, qty), expirationDate(date), calories(cal) {}
+    float calculateTotalPrice(int quantity) {
+        if (quantity > 10) return quantity * price * 0.85;
+        return quantity * price;
+    }
+};
+
+// Task 03
+class Ticket {
+protected:
+    int ticketID;
+    string passengerName;
+    float price;
+    string date;
+    string destination;
+public:
+    Ticket(int id, string name, float p, string d, string dest) : ticketID(id), passengerName(name), price(p), date(d), destination(dest) {}
+    virtual void reserve() {}
+    virtual void cancel() {}
+    virtual void displayTicketInfo() {}
+};
+
+class FlightTicket : public Ticket {
+    string airlineName;
+    int flightNumber;
+    string seatClass;
+public:
+    FlightTicket(int id, string name, float p, string d, string dest, string airline, int flight, string seat) : Ticket(id, name, p, d, dest), airlineName(airline), flightNumber(flight), seatClass(seat) {}
+    void displayTicketInfo() {
+        cout << "Flight: " << airlineName << " Flight No: " << flightNumber << " Seat Class: " << seatClass << endl;
+    }
+};
+
+class TrainTicket : public Ticket {
+    string trainNumber;
+    string coachType;
+    string departureTime;
+public:
+    TrainTicket(int id, string name, float p, string d, string dest, string train, string coach, string time) : Ticket(id, name, p, d, dest), trainNumber(train), coachType(coach), departureTime(time) {}
+    void reserve() {
+        cout << "Auto-assigning seat for Train: " << trainNumber << endl;
+    }
+};
+
+class BusTicket : public Ticket {
+    string busCompany;
+    int seatNumber;
+public:
+    BusTicket(int id, string name, float p, string d, string dest, string company, int seat) : Ticket(id, name, p, d, dest), busCompany(company), seatNumber(seat) {}
+    void cancel() {
+        cout << "Last-minute refund for Bus: " << busCompany << endl;
+    }
+};
+
+class ConcertTicket : public Ticket {
+    string artistName;
+    string venue;
+    string seatType;
+public:
+    ConcertTicket(int id, string name, float p, string d, string dest, string artist, string v, string seat) : Ticket(id, name, p, d, dest), artistName(artist), venue(v), seatType(seat) {}
+    void displayTicketInfo() {
+        cout << "Concert: " << artistName << " Venue: " << venue << " Seat: " << seatType << endl;
+    }
+};
+
+// Task 04
+class Person {
+protected:
+    string name;
+    int age;
+    string contactNumber;
+    string address;
+public:
+    Person(string n, int a, string contact, string addr = "") : name(n), age(a), contactNumber(contact), address(addr) {}
+    virtual void displayInfo() {}
+    virtual void updateInfo() {}
+};
+
+class Patient : public Person {
+    int patientID;
+    string medicalHistory;
+    string doctorAssigned;
+public:
+    Patient(string n, int a, string contact, string addr, int id, string history, string doctor) : Person(n, a, contact, addr), patientID(id), medicalHistory(history), doctorAssigned(doctor) {}
+    void displayInfo() {
+        cout << "Patient ID: " << patientID << " Doctor: " << doctorAssigned << endl;
+    }
+};
+
+class Doctor : public Person {
+    string specialization;
+    float consultationFee;
+    int patientsList;
+public:
+    Doctor(string n, int a, string contact, string addr, string spec, float fee, int list) : Person(n, a, contact, addr), specialization(spec), consultationFee(fee), patientsList(list) {}
+    void displayInfo() {
+        cout << "Doctor: " << name << " Specialization: " << specialization << endl;
+    }
+};
+
+class Nurse : public Person {
+    string assignedWard;
+    string shiftTimings;
+public:
+    Nurse(string n, int a, string contact, string addr, string ward, string shift) : Person(n, a, contact, addr), assignedWard(ward), shiftTimings(shift) {}
+    void displayInfo() {
+        cout << "Nurse: " << name << " Ward: " << assignedWard << endl;
+    }
+};
+
+class Administrator : public Person {
+    string department;
+    float salary;
+public:
+    Administrator(string n, int a, string contact, string addr, string dept, float sal) : Person(n, a, contact, addr), department(dept), salary(sal) {}
+    void updateInfo() {
+        cout << "Administrator Department: " << department << " Salary: " << salary << endl;
+    }
+};
+
+// Task 05
+class Character {
+protected:
+    int characterID;
+    string name;
+    int level;
+    int healthPoints;
+    string weaponType;
+public:
+    Character(int id, string n, int lvl, int hp, string weapon = "") : characterID(id), name(n), level(lvl), healthPoints(hp), weaponType(weapon) {}
+    virtual void attack() {}
+    virtual void defend() {}
+    virtual void displayStats() {}
+};
+
+class Warrior : public Character {
+    int armorStrength;
+    int meleeDamage;
+public:
+    Warrior(int id, string n, int lvl, int hp, string weapon, int armor, int dmg) : Character(id, n, lvl, hp, weapon), armorStrength(armor), meleeDamage(dmg) {}
+    void attack() {
+        cout << "Warrior " << name << " Melee Attack: " << meleeDamage << endl;
+    }
+};
+
+class Mage : public Character {
+    int manaPoints;
+    string spellPower;
+public:
+    Mage(int id, string n, int lvl, int hp, string weapon, int mana, string spell) : Character(id, n, lvl, hp, weapon), manaPoints(mana), spellPower(spell) {}
+    void defend() {
+        cout << "Mage " << name << " uses magical barrier with " << spellPower << endl;
+    }
+};
+
+class Archer : public Character {
+    int arrowCount;
+    float rangedAccuracy;
+public:
+    Archer(int id, string n, int lvl, int hp, string weapon, int arrows, float accuracy) : Character(id, n, lvl, hp, weapon), arrowCount(arrows), rangedAccuracy(accuracy) {}
+    void attack() {
+        cout << "Archer " << name << " attacks with accuracy: " << rangedAccuracy << endl;
+    }
+};
+
+class Rogue : public Character {
+    int stealthLevel;
+    int agility;
+public:
+    Rogue(int id, string n, int lvl, int hp, string weapon, int stealth, int agi) : Character(id, n, lvl, hp, weapon), stealthLevel(stealth), agility(agi) {}
+    void displayStats() {
+        cout << "Rogue " << name << " Agility: " << agility << " Stealth: " << stealthLevel << endl;
+    }
+};
