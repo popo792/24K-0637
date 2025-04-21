@@ -1,0 +1,260 @@
+// Task 01
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Patient {
+public:
+    string name;
+    string id;
+    virtual void displayTreatment() = 0;
+    virtual void calculateCost() = 0;
+    virtual ~Patient() {}
+};
+
+class InPatient : public Patient {
+public:
+    void displayTreatment() override {
+        cout << "InPatient Treatment: Surgery and overnight stay\n";
+    }
+    void calculateCost() override {
+        cout << "InPatient Cost: $5000\n";
+    }
+};
+
+class OutPatient : public Patient {
+public:
+    void displayTreatment() override {
+        cout << "OutPatient Treatment: Consultation and medication\n";
+    }
+    void calculateCost() override {
+        cout << "OutPatient Cost: $300\n";
+    }
+};
+
+int main_task1() {
+    InPatient ip;
+    ip.name = "John";
+    ip.id = "IP1001";
+    OutPatient op;
+    op.name = "Alice";
+    op.id = "OP2001";
+
+    Patient* p1 = &ip;
+    Patient* p2 = &op;
+
+    p1->displayTreatment();
+    p1->calculateCost();
+    p2->displayTreatment();
+    p2->calculateCost();
+
+    return 0;
+}
+
+// Task 02
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MenuItem {
+public:
+    string dishName;
+    double price;
+    virtual void showDetails() = 0;
+    virtual void prepare() = 0;
+    virtual ~MenuItem() {}
+};
+
+class Appetizer : public MenuItem {
+public:
+    void showDetails() override {
+        cout << "Appetizer: " << dishName << ", Price: $" << price << "\n";
+    }
+    void prepare() override {
+        cout << "Preparing appetizer: Chop and mix ingredients\n";
+    }
+};
+
+class MainCourse : public MenuItem {
+public:
+    void showDetails() override {
+        cout << "Main Course: " << dishName << ", Price: $" << price << "\n";
+    }
+    void prepare() override {
+        cout << "Preparing main course: Cook and season properly\n";
+    }
+};
+
+int main_task2() {
+    Appetizer a;
+    a.dishName = "Spring Rolls";
+    a.price = 5.99;
+    MainCourse m;
+    m.dishName = "Grilled Chicken";
+    m.price = 12.50;
+
+    MenuItem* d1 = &a;
+    MenuItem* d2 = &m;
+
+    d1->showDetails();
+    d1->prepare();
+    d2->showDetails();
+    d2->prepare();
+
+    return 0;
+}
+
+// Task 03
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Course {
+public:
+    string courseCode;
+    int credits;
+    virtual void calculateGrade() = 0;
+    virtual void displayInfo() = 0;
+    virtual ~Course() {}
+};
+
+class LectureCourse : public Course {
+public:
+    void calculateGrade() override {
+        cout << "LectureCourse Grade: Based on exams and assignments\n";
+    }
+    void displayInfo() override {
+        cout << "Lecture Course Code: " << courseCode << ", Credits: " << credits << "\n";
+    }
+};
+
+class LabCourse : public Course {
+public:
+    void calculateGrade() override {
+        cout << "LabCourse Grade: Based on lab reports and participation\n";
+    }
+    void displayInfo() override {
+        cout << "Lab Course Code: " << courseCode << ", Credits: " << credits << "\n";
+    }
+};
+
+int main_task3() {
+    LectureCourse lc;
+    lc.courseCode = "CS101";
+    lc.credits = 3;
+    LabCourse lab;
+    lab.courseCode = "PH102";
+    lab.credits = 2;
+
+    Course* c1 = &lc;
+    Course* c2 = &lab;
+
+    c1->displayInfo();
+    c1->calculateGrade();
+    c2->displayInfo();
+    c2->calculateGrade();
+
+    return 0;
+}
+
+// Task 04
+#include <iostream>
+#include <string>
+using namespace std;
+
+class WeatherSensor {
+public:
+    virtual void readData() = 0;
+    virtual void displayReport() = 0;
+    virtual ~WeatherSensor() {}
+};
+
+class Thermometer : public WeatherSensor {
+public:
+    void readData() override {
+        cout << "Thermometer Reading: 22.5°C\n";
+    }
+    void displayReport() override {
+        cout << "Thermometer Report: Normal temperature\n";
+    }
+};
+
+class Barometer : public WeatherSensor {
+public:
+    void readData() override {
+        cout << "Barometer Reading: 1012 hPa\n";
+    }
+    void displayReport() override {
+        cout << "Barometer Report: Stable atmospheric pressure\n";
+    }
+};
+
+int main_task4() {
+    Thermometer t;
+    Barometer b;
+
+    WeatherSensor* s1 = &t;
+    WeatherSensor* s2 = &b;
+
+    s1->readData();
+    s1->displayReport();
+    s2->readData();
+    s2->displayReport();
+
+    return 0;
+}
+
+// Task 05
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Shipment {
+protected:
+    string trackingNumber;
+    double weight;
+
+public:
+    Shipment(string tn, double w) : trackingNumber(tn), weight(w) {}
+    virtual void showDetails() = 0;
+    virtual double estimateDeliveryTime() = 0;
+    virtual ~Shipment() {}
+};
+
+class AirFreight : public Shipment {
+public:
+    AirFreight(string tn, double w) : Shipment(tn, w) {}
+    void showDetails() override {
+        cout << "Air Freight - Tracking Number: " << trackingNumber << ", Weight: " << weight << " kg" << endl;
+    }
+    double estimateDeliveryTime() override {
+        return weight * 0.5;
+    }
+};
+
+class GroundShipment : public Shipment {
+public:
+    GroundShipment(string tn, double w) : Shipment(tn, w) {}
+    void showDetails() override {
+        cout << "Ground Shipment - Tracking Number: " << trackingNumber << ", Weight: " << weight << " kg" << endl;
+    }
+    double estimateDeliveryTime() override {
+        return weight * 1.5;
+    }
+};
+
+int main() {
+    Shipment* s1 = new AirFreight("AF123", 10.0);
+    Shipment* s2 = new GroundShipment("GS456", 10.0);
+
+    s1->showDetails();
+    cout << "Estimated Delivery Time: " << s1->estimateDeliveryTime() << " hours" << endl;
+
+    s2->showDetails();
+    cout << "Estimated Delivery Time: " << s2->estimateDeliveryTime() << " hours" << endl;
+
+    delete s1;
+    delete s2;
+
+    return 0;
+}
