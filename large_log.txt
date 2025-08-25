@@ -1,0 +1,3 @@
+Line 1: System start
+Line 2: Sensor active
+Line 3: Data received
